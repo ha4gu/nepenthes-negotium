@@ -1,0 +1,73 @@
+version: "3.7"
+volumes:
+  pgdata:
+  bundle:
+services:
+  db:
+    image: postgres:10.8
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=P@ssw0rd
+    volumes:
+      - type: volume
+        source: pgdata
+        target: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  chrome:
+    build:
+      context: ./containers/chrome/
+      dockerfile: Dockerfile
+  mailcatcher:
+    image: zolweb/docker-mailcatcher:latest
+    ports:
+      - 1080:1080
+  app:
+    build:
+      context: ./containers/app/
+      dockerfile: Dockerfile
+    command: bundle exec rails server
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=P@ssw0rd
+      - MAILCATCHER_HOST=mailcatcher
+      - MAILCATCHER_PORT=1025
+      - EDITOR=vim
+    volumes:
+      - type: bind
+        source: .
+        target: /opt/railsapp
+      - type: volume
+        source: bundle
+        target: /usr/local/bundle
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+      - chrome
+      - mailcatcher
+    tty: true
+    stdin_open: true
+  web:
+    build:
+      context: ./containers/web/
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ./public
+        target: /usr/share/nginx/html
+        read_only: true
+      - type: bind
+        source: ./tmp/sockets
+        target: /usr/share/nginx/sockets
+    ports:
+      - 80:80
+    depends_on:
+      - app
+  data:
+    image: busybox
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - bundle:/usr/local/bundle
