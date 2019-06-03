@@ -1,0 +1,11 @@
+// Custom bootstrap variables must be set or imported *before* bootstrap.
+@import "bootstrap";
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, YuGothic, "Yu Gothic",
+  "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro",
+  "Noto Sans CJK JP", "IPA Pゴシック", "IPAPGothic", Meiryo, sans-serif,
+  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+//@import "./other-local-scss-file";
