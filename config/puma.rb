@@ -9,7 +9,7 @@ threads threads_count, threads_count
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
-port        ENV.fetch("PORT") { 3000 }
+#port        ENV.fetch("PORT") { 3000 }
 
 # Specifies the `environment` that Puma will run in.
 #
@@ -32,3 +32,8 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+# Listen on 3000/tcp allowing access from any IP address
+bind "tcp://0.0.0.0:3000"
+# And also enable unix domain socket for nginx
+bind "unix://#{Rails.root}/tmp/sockets/puma.sock"
