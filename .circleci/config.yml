@@ -1,0 +1,71 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+jobs:
+  rubocop:
+    docker:
+      - image: circleci/ruby:2.6.3-node-browsers-legacy
+        environment:
+          RAILS_ENV: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: P@ssw0rd
+      - image: circleci/postgres:10.8
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: P@ssw0rd
+          POSTGRES_DB: nepenthes-negotium_test
+    working_directory: /opt/railsapp
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "Gemfile.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop
+  rspec:
+    docker:
+      - image: circleci/ruby:2.6.3-node-browsers-legacy
+        environment:
+          RAILS_ENV: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: P@ssw0rd
+      - image: circleci/postgres:10.8
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: P@ssw0rd
+          POSTGRES_DB: nepenthes-negotium_test
+    working_directory: /opt/railsapp
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "Gemfile.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+      - run: bundle exec rake db:migrate:reset
+      - run:
+          name: Rspec
+          command: bundle exec rspec
+workflows:
+  version: 2
+  rubocop_rspec:
+    jobs:
+      - rubocop
+      - rspec:
+          requires:
+            - rubocop
