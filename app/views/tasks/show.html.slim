@@ -20,4 +20,7 @@ table.table.table-hover.my-3
       th = Task.human_attribute_name(:updated_at)
       td = @task.updated_at.strftime("%Y/%m/%d %H:%M")
 
+p.text-center
+  = link_to "編集", edit_task_path(@task), class: "btn btn-outline-success mx-2"
+
 = link_to "タスク一覧に戻る", tasks_path

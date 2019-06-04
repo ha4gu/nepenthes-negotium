@@ -29,9 +29,22 @@ class TasksController < ApplicationController
   end
 
   def edit
+    @page_title = "タスク編集"
+    @task = Task.find_by_id(params[:id])
+    if @task.nil?
+      redirect_to tasks_url, alert: "指定されたタスクは見つかりません。"
+    end
   end
 
   def update
+    @task = Task.find_by_id(params[:id])
+    if @task && @task.update(task_params)
+      redirect_to tasks_url, notice: "タスクを更新しました。"
+    else
+      flash.now.alert = "タスクを更新できませんでした。"
+      @page_title = "タスク編集"
+      render :edit
+    end
   end
 
   def destroy
