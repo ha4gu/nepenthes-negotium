@@ -16,7 +16,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: P@ssw0rd
           POSTGRES_DB: nepenthes-negotium_test
-    working_directory: /opt/railsapp
+    working_directory: ~/railsapp
     steps:
       - checkout
       - restore_cache:
@@ -44,7 +44,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: P@ssw0rd
           POSTGRES_DB: nepenthes-negotium_test
-    working_directory: /opt/railsapp
+    working_directory: ~/railsapp
     steps:
       - checkout
       - restore_cache:
