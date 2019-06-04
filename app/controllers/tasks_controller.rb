@@ -1,10 +1,11 @@
 class TasksController < ApplicationController
+  before_action :set_task, only: [:show, :edit, :update, :destroy]
+
   def index
     @tasks = Task.all
   end
 
   def show
-    @task = Task.find_by_id(params[:id])
     if @task.nil?
       redirect_to tasks_url, alert: "指定されたタスクは見つかりません。"
     end
@@ -25,14 +26,12 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = Task.find_by_id(params[:id])
     if @task.nil?
       redirect_to tasks_url, alert: "指定されたタスクは見つかりません。"
     end
   end
 
   def update
-    @task = Task.find_by_id(params[:id])
     if @task && @task.update(task_params)
       redirect_to tasks_url, notice: "タスクを更新しました。"
     else
@@ -42,7 +41,6 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task = Task.find_by_id(params[:id])
     if @task && @task.destroy
       redirect_to tasks_url, notice: "タスクを削除しました。"
     else
@@ -55,5 +53,9 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:subject, :detail)
+  end
+
+  def set_task
+    @task = Task.find_by_id(params[:id])
   end
 end
