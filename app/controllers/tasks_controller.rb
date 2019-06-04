@@ -1,5 +1,7 @@
 class TasksController < ApplicationController
   def index
+    @page_title = "タスク一覧"
+    @tasks = Task.all
   end
 
   def show
