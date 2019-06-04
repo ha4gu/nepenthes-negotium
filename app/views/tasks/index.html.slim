@@ -10,5 +10,5 @@ table.table.table-hover.my-3
   tbody
     - @tasks.each do |task|
       tr
-        td = task.subject
-        td = task.created_at.strftime("%Y/%m/%d %H:%M")
+        td = link_to task.subject, task_path(task)
+        td = link_to task.created_at.strftime("%Y/%m/%d %H:%M"), task_path(task)

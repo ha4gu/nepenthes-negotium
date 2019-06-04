@@ -1,0 +1,23 @@
+- provide :page_title, @page_title
+
+h1 = @page_title
+
+table.table.table-hover.my-3
+  tbody
+    tr
+      th = Task.human_attribute_name(:id)
+      td = @task.id
+    tr
+      th = Task.human_attribute_name(:subject)
+      td = @task.subject
+    tr
+      th = Task.human_attribute_name(:detail)
+      td = simple_format(h(@task.detail), {}, sanitize: false, wrapper_tag: "div")
+    tr
+      th = Task.human_attribute_name(:created_at)
+      td = @task.created_at.strftime("%Y/%m/%d %H:%M")
+    tr
+      th = Task.human_attribute_name(:updated_at)
+      td = @task.updated_at.strftime("%Y/%m/%d %H:%M")
+
+= link_to "タスク一覧に戻る", tasks_path
