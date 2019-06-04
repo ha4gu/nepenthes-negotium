@@ -1,6 +1,7 @@
-- provide :page_title, @page_title
+- page_title = "タスク作成"
+- provide :page_title, page_title
 
-h1 = @page_title
+h1 = page_title
 
 = render partial: "form", locals: { task: @task }
 

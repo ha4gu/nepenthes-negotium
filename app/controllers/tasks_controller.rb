@@ -1,11 +1,9 @@
 class TasksController < ApplicationController
   def index
-    @page_title = "タスク一覧"
     @tasks = Task.all
   end
 
   def show
-    @page_title = "タスク詳細"
     @task = Task.find_by_id(params[:id])
     if @task.nil?
       redirect_to tasks_url, alert: "指定されたタスクは見つかりません。"
@@ -13,7 +11,6 @@ class TasksController < ApplicationController
   end
 
   def new
-    @page_title = "タスク作成"
     @task = Task.new
   end
 
@@ -23,13 +20,11 @@ class TasksController < ApplicationController
       redirect_to tasks_url, notice: "タスクを作成しました。"
     else
       flash.now.alert = "タスクを作成できませんでした。"
-      @page_title = "タスク作成"
       render :new
     end
   end
 
   def edit
-    @page_title = "タスク編集"
     @task = Task.find_by_id(params[:id])
     if @task.nil?
       redirect_to tasks_url, alert: "指定されたタスクは見つかりません。"
@@ -42,7 +37,6 @@ class TasksController < ApplicationController
       redirect_to tasks_url, notice: "タスクを更新しました。"
     else
       flash.now.alert = "タスクを更新できませんでした。"
-      @page_title = "タスク編集"
       render :edit
     end
   end
@@ -53,7 +47,6 @@ class TasksController < ApplicationController
       redirect_to tasks_url, notice: "タスクを削除しました。"
     else
       flash.now.alert = "タスクを削除できませんでした。"
-      @page_title = "タスク詳細"
       render :show
     end
   end
