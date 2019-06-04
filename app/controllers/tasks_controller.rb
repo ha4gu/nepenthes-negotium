@@ -13,9 +13,19 @@ class TasksController < ApplicationController
   end
 
   def new
+    @page_title = "タスク作成"
+    @task = Task.new
   end
 
   def create
+    @task = Task.new(task_params)
+    if @task && @task.save
+      redirect_to tasks_url, notice: "タスクを作成しました。"
+    else
+      flash.now.alert = "タスクを作成できませんでした。"
+      @page_title = "タスク作成"
+      render :new
+    end
   end
 
   def edit
@@ -25,5 +35,11 @@ class TasksController < ApplicationController
   end
 
   def destroy
+  end
+
+  private
+
+  def task_params
+    params.require(:task).permit(:subject, :detail)
   end
 end
