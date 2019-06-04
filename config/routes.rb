@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
-  root to: "tasks#index"
+  root to: "static_pages#top"
   resources :tasks
 end

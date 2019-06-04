@@ -1,0 +1,8 @@
+- if flash.any?
+  #flash_message
+    - flash.each do |message_type, message|
+      - alert_class = "alert"
+      - alert_class += " alert-info"    if message_type == "notice"
+      - alert_class += " alert-warning" if message_type == "alert"
+      = content_tag :div, class: alert_class do
+        = content_tag :div, message, class: "container"
