@@ -72,6 +72,11 @@ group :development, :test do
   gem "dotenv-rails", "~> 2.7", ">= 2.7.2"
   # Use factory_bot for generate some test data
   gem "factory_bot_rails", "~> 5.0", ">= 5.0.2"
+  # Use RuboCop for code style checking
+  gem "rubocop", "~> 0.71.0", require: false
+  gem "rubocop-performance", "~> 1.3", require: false
+  gem "rubocop-rails", "~> 2.0", require: false
+  gem "rubocop-rspec", "~> 1.33", require: false
 end
 
 group :development do
