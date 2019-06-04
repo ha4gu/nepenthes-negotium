@@ -22,5 +22,7 @@ table.table.table-hover.my-3
 
 p.text-center
   = link_to "編集", edit_task_path(@task), class: "btn btn-outline-success mx-2"
+  = link_to "削除", task_path(@task), method: :delete, class: "btn btn-danger mx-2",
+          data: {confirm: "このタスクを削除しますか？"}
 
 = link_to "タスク一覧に戻る", tasks_path

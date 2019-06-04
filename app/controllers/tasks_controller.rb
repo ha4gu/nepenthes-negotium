@@ -48,6 +48,14 @@ class TasksController < ApplicationController
   end
 
   def destroy
+    @task = Task.find_by_id(params[:id])
+    if @task && @task.destroy
+      redirect_to tasks_url, notice: "タスクを削除しました。"
+    else
+      flash.now.alert = "タスクを削除できませんでした。"
+      @page_title = "タスク詳細"
+      render :show
+    end
   end
 
   private
