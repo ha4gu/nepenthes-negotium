@@ -1,0 +1,15 @@
+- if task.errors.present?
+  .alert.alert-warning
+    = tag.p "エラー内容", class: "alert-heading", style: "font-size: 1.3em;"
+    ul#error_explanation
+      - task.errors.full_messages.each do |message|
+        li = message
+
+= form_with model: task, local: true, class: "my-3" do |f|
+  .form-group
+    = f.label :subject
+    = f.text_field :subject, class: "form-control", id: "task_subject"
+  .form-group
+    = f.label :detail
+    = f.text_area :detail, row: 4, class: "form-control", id: "task_detail"
+  = f.submit nil, class: "btn btn-success", id: "task_form_button"

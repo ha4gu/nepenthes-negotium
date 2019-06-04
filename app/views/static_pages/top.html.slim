@@ -2,3 +2,10 @@
 
 h1 StaticPages#top
 p Find me in app/views/static_pages/top.html.slim
+
+ul
+  li
+    | タスク
+    ul
+      li = link_to "タスク一覧", tasks_path
+      li = link_to "タスク作成", new_task_path
