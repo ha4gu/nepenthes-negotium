@@ -9,8 +9,8 @@ jobs:
       - image: circleci/ruby:2.6.3-node-browsers-legacy
         environment:
           RAILS_ENV: test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: P@ssw0rd
+          DATABASE_USER: postgres
+          DATABASE_PASSWORD: P@ssw0rd
       - image: circleci/postgres:10.8
         environment:
           POSTGRES_USER: postgres
@@ -24,9 +24,7 @@ jobs:
             - v1-dependencies-{{ checksum "Gemfile.lock" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      - run: gem update --system
-      - run: gem update bundler
-      - run: gem update
+      - run: gem install bundler -v "2.0.1"
       - run: bundle install --jobs=4 --retry=3 --path vendor/bundle
       - save_cache:
           paths:
@@ -40,8 +38,8 @@ jobs:
       - image: circleci/ruby:2.6.3-node-browsers-legacy
         environment:
           RAILS_ENV: test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: P@ssw0rd
+          DATABASE_USER: postgres
+          DATABASE_PASSWORD: P@ssw0rd
       - image: circleci/postgres:10.8
         environment:
           POSTGRES_USER: postgres
