@@ -95,7 +95,6 @@ workflows:
               ignore:
                 - staging
                 - production
-                - circleci
       - rspec:
           requires:
             - rubocop
@@ -104,10 +103,8 @@ workflows:
               ignore:
                 - staging
                 - production
-                - circleci
       - stagingdeploy:
           filters:
             branches:
               only:
                 - staging
-                - circleci
