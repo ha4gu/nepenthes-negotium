@@ -71,8 +71,20 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Setup Heroku command
+          command: bash .circleci/setup_heroku.sh
+      - run:
+          name: Execute Heroku maintenance on
+          command: heroku maintenance:on --app ${HEROKU_APP_NAME}
+      - run:
           name: Deploy Master to Heroku
           command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+      - run:
+          name: Execute Heroku db migrate
+          command: heroku run rails db:migrate --app ${HEROKU_APP_NAME}
+      - run:
+          name: Execut Heroku maintenance off
+          command: heroku maintenance:off --app ${HEROKU_APP_NAME}
 workflows:
   version: 2
   rubocop_rspec:
