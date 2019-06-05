@@ -68,7 +68,17 @@ workflows:
   version: 2
   rubocop_rspec:
     jobs:
-      - rubocop
+      - rubocop:
+          filters:
+            branches:
+              ignore:
+                - staging
+                - production
       - rspec:
           requires:
             - rubocop
+          filters:
+            branches:
+              ignore:
+                - staging
+                - production
