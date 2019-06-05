@@ -26,6 +26,21 @@ describe "タスク", type: :system do
         expect(page).to have_content test_task_subject
       end
     end
+
+    context "タスクを2つ作成後 /tasks にアクセス" do
+      before do
+        FactoryBot.create(:task, subject: "Former task", detail: "")
+        FactoryBot.create(:task, subject: "Latter task", detail: "")
+        visit tasks_path
+      end
+
+      it "後から作成したタスクがより上に表示される" do
+        expect(page.all("tr").count).to eq 3
+        expect(page).to have_content "Former task"
+        expect(page).to have_content "Latter task"
+        expect(page.body.index("Former task")).to be > page.body.index("Latter task")
+      end
+    end
   end
 
   describe "詳細表示" do
