@@ -5,7 +5,7 @@
       - task.errors.full_messages.each do |message|
         li = message
 
-= form_with model: task, local: true, class: "my-3" do |f|
+= form_with model: task, local: true, class: "my-3", html: { autocomplete: "off" } do |f|
   .form-group
     = f.label :subject
     = f.text_field :subject, class: "form-control", id: "task_subject"
