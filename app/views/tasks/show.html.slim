@@ -15,6 +15,12 @@ table.table.table-hover.my-3
       th = Task.human_attribute_name(:detail)
       td = simple_format(h(@task.detail), {}, sanitize: false, wrapper_tag: "div")
     tr
+      th 終了期限
+      td
+        = @task.deadline_date.strftime("%Y/%m/%d") if @task.deadline_date
+        | &nbsp;
+        = @task.deadline_time.to_s(:time) if @task.deadline_time
+    tr
       th = Task.human_attribute_name(:created_at)
       td = @task.created_at.strftime("%Y/%m/%d %H:%M")
     tr

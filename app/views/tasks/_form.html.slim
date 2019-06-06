@@ -5,11 +5,21 @@
       - task.errors.full_messages.each do |message|
         li = message
 
-= form_with model: task, local: true, class: "my-3" do |f|
+= form_with model: task, local: true, class: "my-3", html: { autocomplete: "off" } do |f|
   .form-group
     = f.label :subject
     = f.text_field :subject, class: "form-control", id: "task_subject"
   .form-group
     = f.label :detail
     = f.text_area :detail, row: 4, class: "form-control", id: "task_detail"
+  .form-group
+    = f.label :deadline_date
+    = f.date_select :deadline_date, use_two_digit_numbers: true,
+            date_separator: " / ", include_blank: true, start_year: Date.today.year,
+            class: "form-control", id: "task_deadline_date"
+  .form-group
+    = f.label :deadline_time
+    = f.time_select :deadline_time, ignore_date: true,
+            minute_step: 5, include_blank: true,
+            class: "form-control", id: "task_deadline_time"
   = f.submit nil, class: "btn btn-success", id: "task_form_button"

@@ -3,6 +3,8 @@ require "rails_helper"
 describe "タスク", type: :system do
   test_task_subject = "テスト用タスク"
   test_task_detail  = "このタスクはテスト用です。"
+  test_task_deadline_date = Date.tomorrow
+  test_task_deadline_time = Time.zone.now.since(1.hour)
 
   describe "一覧表示" do
     context "/tasks にアクセス" do
@@ -45,7 +47,8 @@ describe "タスク", type: :system do
 
   describe "詳細表示" do
     before do
-      FactoryBot.create(:task, subject: test_task_subject, detail: test_task_detail)
+      FactoryBot.create(:task, subject: test_task_subject, detail: test_task_detail,
+                        deadline_date: test_task_deadline_date, deadline_time: test_task_deadline_time)
     end
 
     context "タスク作成後タスク詳細画面にアクセス" do
@@ -54,7 +57,10 @@ describe "タスク", type: :system do
       end
 
       it "作成したタスクの詳細が表示" do
+        expect(page).to have_content test_task_subject
         expect(page).to have_content test_task_detail
+        expect(page).to have_content test_task_deadline_date.strftime("%Y/%m/%d")
+        expect(page).to have_content test_task_deadline_time.to_s(:time)
       end
     end
 
