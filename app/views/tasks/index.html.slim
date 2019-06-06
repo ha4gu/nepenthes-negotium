@@ -3,13 +3,34 @@
 
 h1 = page_title
 
+#index-sort.text-right
+  = tag.label "ソート", for: "tasks_index_sort_order", class: "mr-1"
+  = tag.select name: "tasks_index_sort_order", onChange: "location.href=value;"
+    = tag.option "",              value: ""
+    = tag.option "作成日時 昇順", value: "#{tasks_path(sort: "ca")}"
+    = tag.option "作成日時 降順", value: "#{tasks_path(sort: "cd")}"
+    = tag.option "更新日時 昇順", value: "#{tasks_path(sort: "ua")}"
+    = tag.option "更新日時 降順", value: "#{tasks_path(sort: "ud")}"
+    = tag.option "終了期限 昇順", value: "#{tasks_path(sort: "da")}"
+    = tag.option "終了期限 降順", value: "#{tasks_path(sort: "dd")}"
+
 table.table.table-hover.my-3
   thead.thead-default
     tr
       th = Task.human_attribute_name(:subject)
-      th = Task.human_attribute_name(:created_at)
+      - if params[:sort] && params[:sort][0] == "u"
+        th = Task.human_attribute_name(:updated_at)
+      - elsif params[:sort] && params[:sort][0] == "d"
+        th = Task.human_attribute_name(:deadline_for_show)
+      - else
+        th = Task.human_attribute_name(:created_at)
   tbody
     - @tasks.each do |task|
       tr
         td = link_to task.subject, task_path(task)
-        td = link_to task.created_at.strftime("%Y/%m/%d %H:%M"), task_path(task)
+        - if params[:sort] && params[:sort][0] == "u"
+          td = task.updated_at.strftime("%Y/%m/%d %H:%M")
+        - elsif params[:sort] && params[:sort][0] == "d"
+          td = task.deadline_for_show
+        - else
+          td = task.created_at.strftime("%Y/%m/%d %H:%M")

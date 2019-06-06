@@ -16,6 +16,7 @@ ja:
         detail: 詳細
         deadline_date: 終了期限日
         deadline_time: 終了期限時刻
+        deadline_for_show: 終了期限
         created_at: 作成日時
         updated_at: 更新日時
   date:
