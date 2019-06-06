@@ -40,6 +40,9 @@ gem "slim-rails", "~> 3.2"
 gem "bootstrap", "~> 4.3", ">= 4.3.1"
 gem "jquery-rails", "~> 4.3", ">= 4.3.3"
 
+# Use statefulEnum to handle state of instance
+gem "stateful_enum", "~> 0.6.0"
+
 # Use devise for authentication
 # gem "devise", "~> 4.6", ">= 4.6.2"
 # gem "devise-i18n", "~> 1.8"
