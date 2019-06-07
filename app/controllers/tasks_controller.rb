@@ -5,7 +5,7 @@ class TasksController < ApplicationController
   def index
     @q = Task.ransack(params[:q])
     @q.sorts = "created_at desc" if @q.sorts.empty?
-    @tasks = @q.result(distinct: true)
+    @tasks = @q.result(distinct: false)
   end
 
   def show
