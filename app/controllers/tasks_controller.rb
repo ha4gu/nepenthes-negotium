@@ -3,8 +3,8 @@ class TasksController < ApplicationController
   before_action :set_options_for_select, only: [:new, :edit]
 
   def index
-    params.permit(:sort)
     @q = Task.ransack(params[:q])
+    @q.sorts = "created_at desc" if @q.sorts.empty?
     @tasks = @q.result(distinct: true)
   end
 
