@@ -3,24 +3,50 @@
 
 h1 = page_title
 
-#index-sort.text-right
-  = tag.label "ソート", for: "tasks_index_sort_order", class: "mr-1"
-  = tag.select name: "tasks_index_sort_order", onChange: "location.href=value;"
-    = tag.option "",              value: ""
-    = tag.option "作成日時 昇順", value: "#{tasks_path(sort: "ca")}"
-    = tag.option "作成日時 降順", value: "#{tasks_path(sort: "cd")}"
-    = tag.option "更新日時 昇順", value: "#{tasks_path(sort: "ua")}"
-    = tag.option "更新日時 降順", value: "#{tasks_path(sort: "ud")}"
-    = tag.option "終了期限 昇順", value: "#{tasks_path(sort: "da")}"
-    = tag.option "終了期限 降順", value: "#{tasks_path(sort: "dd")}"
+
+
+#index-search.my-2
+  = search_form_for @q, class: "" do |f|
+    p 検索
+    / subjectによる絞り込み
+    .d-flex.align-items-baseline
+      = tag.p "・"
+      .flex-grow-1.mx-2
+        = f.search_field :subject_cont, class: "form-control"
+      = tag.p "を含む"
+    / statusによる絞り込み
+    .d-flex.align-items-baseline
+      = tag.p "・状態が"
+      .flex-grow-1.mx-2
+        = f.collection_check_boxes :status_in, Task.statuses, :last, :first do |b|
+          = b.label(class: "mr-2") { b.check_box + Task.human_attribute_name("status.#{b.text}")}
+      = tag.p "のもの"
+    / ソート方法を変更している場合、それを引き継ぐための記述
+    = f.hidden_field :s, value: (params[:q].nil? ? "created_at desc" : params[:q][:s])
+    / 検索ボタン
+    .text-left
+      = f.submit class: "btn btn-outline-success"
+
+#index-sort.text-right.my-2
+  .d-inline-flex.align-items-center
+    = tag.p "ソート", class: "my-0 mx-2"
+    = tag.div
+      = tag.select name: "tasks_index_sort_order", onChange: "location.href=value;", class: "custom-select"
+        = tag.option "作成日時 昇順", value: sort_url(@q, :created_at, default_order:  :asc), selected: params[:q] && params[:q][:s] == "created_at asc"
+        = tag.option "作成日時 降順", value: sort_url(@q, :created_at, default_order: :desc), selected: params[:q].nil? || params[:q][:s] == "created_at desc"
+        = tag.option "更新日時 昇順", value: sort_url(@q, :updated_at, default_order:  :asc), selected: params[:q] && params[:q][:s] == "updated_at asc"
+        = tag.option "更新日時 降順", value: sort_url(@q, :updated_at, default_order: :desc), selected: params[:q] && params[:q][:s] == "updated_at desc"
+        = tag.option "終了期限 昇順", value: sort_url(@q, :deadline,   default_order:  :asc), selected: params[:q] && params[:q][:s] == "deadline asc"
+        = tag.option "終了期限 降順", value: sort_url(@q, :deadline,   default_order: :desc), selected: params[:q] && params[:q][:s] == "deadline desc"
 
 table.table.table-hover.my-3
   thead.thead-default
     tr
       th = Task.human_attribute_name(:subject)
-      - if params[:sort] && params[:sort][0] == "u"
+      / - if params[:sort] && params[:sort][0] == "u"
+      - if params[:q] && params[:q][:s] =~ /^updated_at.+/
         th = Task.human_attribute_name(:updated_at)
-      - elsif params[:sort] && params[:sort][0] == "d"
+      - elsif params[:q] && params[:q][:s] =~ /^deadline.+/
         th = Task.human_attribute_name(:deadline_for_show)
       - else
         th = Task.human_attribute_name(:created_at)
@@ -28,9 +54,9 @@ table.table.table-hover.my-3
     - @tasks.each do |task|
       tr
         td = link_to task.subject, task_path(task)
-        - if params[:sort] && params[:sort][0] == "u"
-          td = task.updated_at.strftime("%Y/%m/%d %H:%M")
-        - elsif params[:sort] && params[:sort][0] == "d"
-          td = task.deadline_for_show
+        - if params[:q] && params[:q][:s] =~ /^updated_at.+/
+          td.nowrap = task.updated_at.strftime("%Y/%m/%d %H:%M")
+        - elsif params[:q] && params[:q][:s] =~ /^deadline.+/
+          td.nowrap = task.deadline_for_show
         - else
-          td = task.created_at.strftime("%Y/%m/%d %H:%M")
+          td.nowrap = task.created_at.strftime("%Y/%m/%d %H:%M")
