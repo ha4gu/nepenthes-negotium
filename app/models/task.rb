@@ -4,6 +4,7 @@ class Task < ApplicationRecord
 
   # Validation
   validates :subject, presence: true
+  validates :status,  presence: true, inclusion: { in: %w(created started finished) }
 
   # Scopes
   scope :create_asc,  -> { order(created_at: :asc) }
@@ -13,6 +14,18 @@ class Task < ApplicationRecord
   scope :deadline_asc,  -> { order("deadline_date  ASC NULLS LAST, deadline_time DESC NULLS LAST") }
   scope :deadline_desc, -> { order("deadline_date DESC NULLS LAST, deadline_time ASC  NULLS FIRST") }
 
+  # status, handled by statefulEnum
+  enum status: { created: 0, started: 1, finished: 2 } do
+    event :start do
+      transition created: :started
+    end
+
+    event :finish do
+      transition all - [:finished] => :finished
+    end
+  end
+
+  # 終了期限（ビューでの表示用）
   def deadline_for_show
     if @deadline_for_show
       @deadline_for_show
