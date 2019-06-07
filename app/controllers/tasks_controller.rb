@@ -4,16 +4,8 @@ class TasksController < ApplicationController
 
   def index
     params.permit(:sort)
-    @tasks = Task.all
-    @tasks = case params[:sort]
-             when "ca" then @tasks.create_asc
-             when "cd" then @tasks.create_desc
-             when "ua" then @tasks.update_asc
-             when "ud" then @tasks.update_desc
-             when "da" then @tasks.deadline_asc
-             when "dd" then @tasks.deadline_desc
-             else           @tasks.create_desc
-             end
+    @q = Task.ransack(params[:q])
+    @tasks = @q.result(distinct: true)
   end
 
   def show
