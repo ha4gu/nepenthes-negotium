@@ -65,16 +65,16 @@ class TasksController < ApplicationController
 
     if date_year.present? && date_month.present? && date_day.present? && time_hour.present? && time_minute.present?
       # すべての項目が入力済みの場合: _dateも_timeも有効
-      params.require(:task).permit(:subject, :detail, :status, :deadline_date, :deadline_time)
+      params.require(:task).permit(:subject, :detail, :status, :priority, :deadline_date, :deadline_time)
     elsif date_year.present? && date_month.present? && date_day.present?
       # 日付部分は入力済みだが時刻部分は不十分: _dateのみ有効
-      params.require(:task).permit(:subject, :detail, :status, :deadline_date)
+      params.require(:task).permit(:subject, :detail, :status, :priority, :deadline_date)
     elsif time_hour.present? && time_minute.present?
       # 時刻部分は入力済みだが日付部分は不十分: _timeのみ有効
-      params.require(:task).permit(:subject, :detail, :status, :deadline_time)
+      params.require(:task).permit(:subject, :detail, :status, :priority, :deadline_time)
     else
       # 日付部分も時刻部分も不十分: _dateも_timeも無効にしておく
-      params.require(:task).permit(:subject, :detail, :status)
+      params.require(:task).permit(:subject, :detail, :status, :priority)
     end
   end
 
@@ -83,9 +83,15 @@ class TasksController < ApplicationController
   end
 
   def set_options_for_select
-    @options_for_select = []
+    # 状態
+    @status_options = []
     Task.statuses.keys.each do |state|
-      @options_for_select << [Task.human_attribute_name("status.#{state}"), state]
+      @status_options << [Task.human_attribute_name("status.#{state}"), state]
+    end
+    # 優先度
+    @priority_options = []
+    Task.priorities.keys.each do |priority|
+      @priority_options << [Task.human_attribute_name("priority.#{priority}"), priority]
     end
   end
 end
