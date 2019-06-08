@@ -43,6 +43,8 @@ h1 = page_title
         = tag.option "更新日時 降順", value: sort_url(@q, :updated_at, default_order: :desc), selected: params[:q] && params[:q][:s] == "updated_at desc"
         = tag.option "終了期限 昇順", value: sort_url(@q, :deadline,   default_order:  :asc), selected: params[:q] && params[:q][:s] == "deadline asc"
         = tag.option "終了期限 降順", value: sort_url(@q, :deadline,   default_order: :desc), selected: params[:q] && params[:q][:s] == "deadline desc"
+        = tag.option "優先度   昇順", value: sort_url(@q, :priority,   default_order:  :asc), selected: params[:q] && params[:q][:s] == "priority asc"
+        = tag.option "優先度   降順", value: sort_url(@q, :priority,   default_order: :desc), selected: params[:q] && params[:q][:s] == "priority desc"
 
 table.table.table-hover.my-3
   thead.thead-default
