@@ -21,6 +21,13 @@ h1 = page_title
         = f.collection_check_boxes :status_in, Task.statuses, :last, :first do |b|
           = b.label(class: "mr-2") { b.check_box + Task.human_attribute_name("status.#{b.text}")}
       = tag.p "のもの"
+    / priorityによる絞り込み
+    .d-flex.align-items-baseline
+      = tag.p "・優先度が"
+      .flex-grow-1.mx-2
+        = f.collection_check_boxes :priority_in, Task.priorities, :last, :first do |b|
+          = b.label(class: "mr-2") {b.check_box + Task.human_attribute_name("priority.#{b.text}")}
+      = tag.p "のもの"
     / ソート方法を変更している場合、それを引き継ぐための記述
     = f.hidden_field :s, value: (params[:q].nil? ? "created_at desc" : params[:q][:s])
     / 検索ボタン
@@ -43,7 +50,7 @@ table.table.table-hover.my-3
   thead.thead-default
     tr
       th = Task.human_attribute_name(:subject)
-      / - if params[:sort] && params[:sort][0] == "u"
+      th = Task.human_attribute_name(:priority)
       - if params[:q] && params[:q][:s] =~ /^updated_at.+/
         th = Task.human_attribute_name(:updated_at)
       - elsif params[:q] && params[:q][:s] =~ /^deadline.+/
@@ -54,6 +61,7 @@ table.table.table-hover.my-3
     - @tasks.each do |task|
       tr
         td = link_to task.subject, task_path(task)
+        td = Task.human_attribute_name("priority.#{task.priority}")
         - if params[:q] && params[:q][:s] =~ /^updated_at.+/
           td.nowrap = task.updated_at.strftime("%Y/%m/%d %H:%M")
         - elsif params[:q] && params[:q][:s] =~ /^deadline.+/
