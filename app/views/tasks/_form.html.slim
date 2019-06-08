@@ -25,5 +25,9 @@
   .form-group
     = f.label :status
     = f.select :status, class: "form-control", id: "task_status" do
-      - options_for_select(@options_for_select, task.status)
+      - options_for_select(@status_options, task.status)
+  .form-group
+    = f.label :priority
+    = f.select :priority, class: "form-control", id: "task_priority" do
+      - options_for_select(@priority_options, task.priority)
   = f.submit nil, class: "btn btn-success", id: "task_form_button"
