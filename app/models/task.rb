@@ -3,8 +3,9 @@ class Task < ApplicationRecord
   before_validation :set_deadline_date
 
   # Validation
-  validates :subject, presence: true
-  validates :status,  presence: true, inclusion: { in: %w(created started finished) }
+  validates :subject,  presence: true
+  validates :status,   presence: true, inclusion: { in: %w(created started finished) }
+  validates :priority, presence: true, inclusion: { in: %w(low middle high) }
 
   # Custom scopes for ransack
   scope :sort_by_deadline_asc,  -> { order("deadline_date  ASC NULLS LAST, deadline_time DESC NULLS LAST") }
@@ -18,6 +19,21 @@ class Task < ApplicationRecord
 
     event :finish do
       transition all - [:finished] => :finished
+    end
+  end
+
+  # priority, handled by statefulEnum
+  enum priority: { low: 2, middle: 3, high: 4 } do
+    event :to_low do
+      transition all - [:low] => :low
+    end
+
+    event :to_middle do
+      transition all - [:middle] => :middle
+    end
+
+    event :to_high do
+      transition all - [:high] => :high
     end
   end
 
