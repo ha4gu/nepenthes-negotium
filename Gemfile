@@ -40,6 +40,9 @@ gem "slim-rails", "~> 3.2"
 gem "bootstrap", "~> 4.3", ">= 4.3.1"
 gem "jquery-rails", "~> 4.3", ">= 4.3.3"
 
+# Use statefulEnum to handle state of instance
+gem "stateful_enum", "~> 0.6.0"
+
 # Use devise for authentication
 # gem "devise", "~> 4.6", ">= 4.6.2"
 # gem "devise-i18n", "~> 1.8"
@@ -63,7 +66,7 @@ gem "jquery-rails", "~> 4.3", ">= 4.3.3"
 # gem "rails_autolink", "~> 1.1", ">= 1.1.6"
 
 # Use ransack for use of search function
-# gem "ransack", "~> 2.1", ">= 2.1.1"
+gem "ransack", "~> 2.1", ">= 2.1.1"
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console

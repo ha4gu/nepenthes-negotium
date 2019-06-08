@@ -21,6 +21,12 @@ table.table.table-hover.my-3
         | &nbsp;
         = @task.deadline_time.to_s(:time) if @task.deadline_time
     tr
+      th = Task.human_attribute_name(:status)
+      td = Task.human_attribute_name("status.#{@task.status}")
+    tr
+      th = Task.human_attribute_name(:priority)
+      td = Task.human_attribute_name("priority.#{@task.priority}")
+    tr
       th = Task.human_attribute_name(:created_at)
       td = @task.created_at.strftime("%Y/%m/%d %H:%M")
     tr
