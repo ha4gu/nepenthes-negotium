@@ -6,6 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+ha4gu = User.create(name: "ha4gu", email: "ha4gu@example.com", password: "P@ssw0rd")
+
 COUNT = 50000 # should be less than or equal 99999
 1.step(COUNT) do |i|
   current_subject = "Task#{sprintf "%05d", i}"
