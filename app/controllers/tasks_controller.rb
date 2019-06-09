@@ -2,10 +2,12 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :set_options_for_select, only: [:new, :edit]
 
+  include Pagy::Backend
+
   def index
     @q = Task.ransack(params[:q])
     @q.sorts = "created_at desc" if @q.sorts.empty?
-    @tasks = @q.result(distinct: false)
+    @pagy, @tasks = pagy(@q.result(distinct: false))
   end
 
   def show
