@@ -54,7 +54,8 @@ gem "stateful_enum", "~> 0.6.0"
 # gem "omniauth-instagram", "~> 1.3"
 
 # Use pagy for pagination
-# gem "pagy", "~> 2.1", ">= 2.1.4"
+gem "oj", "~> 3.7", ">= 3.7.12"
+gem "pagy", "~> 3.2", ">= 3.2.1"
 
 # Use FriendlyId to create pretty URLs
 # gem "friendly_id", "~> 5.2", ">= 5.2.5"
