@@ -1,4 +1,7 @@
 class Task < ApplicationRecord
+  # Association
+  belongs_to :user
+
   # Callback
   before_validation :set_deadline_date
 
