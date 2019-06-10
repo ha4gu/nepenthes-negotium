@@ -1,11 +1,8 @@
 class SessionsController < ApplicationController
-  def new
-    # 既にログイン済みの場合はリダイレクトさせる
-    if session[:user_id] && User.find_by_id(session[:user_id])
-      flash.notice = "既にログインしています。"
-      redirect_to root_path # temp
-    end
+  before_action :must_not_be_logged_in, only: [:new, :create]
+  before_action :must_be_logged_in, only: [:destroy]
 
+  def new
     # 入力済みメールアドレスを引き継ぐ処理
     @input_email_address ||= ""
   end

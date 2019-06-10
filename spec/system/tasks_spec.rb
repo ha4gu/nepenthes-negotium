@@ -3,6 +3,10 @@ require "rails_helper"
 describe "タスク", type: :system do
   before do
     @test_user = FactoryBot.create(:user)
+    visit login_path
+    fill_in "メールアドレス", with: "test@example.com"
+    fill_in "パスワード", with: "P@ssw0rd"
+    click_button "ログイン"
   end
 
   test_task_subject = "テスト用タスク"

@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  before_action :must_be_logged_in
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :set_options_for_select, only: [:new, :edit]
 

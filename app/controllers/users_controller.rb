@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :must_not_be_logged_in, only: [:new, :create]
+  before_action :must_be_logged_in, only: [:index, :show, :edit, :update, :destroy]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index

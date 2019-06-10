@@ -17,10 +17,9 @@ ul
   li
     | セッション
     ul
-      - if session[:user_id]
-        - user = User.find_by_id(session[:user_id])
-        li = "現在 #{user.name} でログイン中"
-        li = link_to "ログアウト", session_path(user), method: :delete,
+      - if @current_user # 既にログイン済みの場合
+        li = "現在 #{@current_user.name} でログイン中"
+        li = link_to "ログアウト", session_path(@current_user), method: :delete,
                 data: {confirm: "ログアウトしますか？"}
       - else
         li = link_to "ログイン", login_path
