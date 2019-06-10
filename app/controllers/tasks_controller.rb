@@ -22,6 +22,7 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
+    @task.user_id ||= User.first.id # 暫定対応
     if @task && @task.save
       redirect_to tasks_url, notice: "タスクを作成しました。"
     else
