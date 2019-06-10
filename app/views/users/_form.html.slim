@@ -1,0 +1,21 @@
+- if user.errors.present?
+  .alert.alert-warning
+    = tag.p "エラー内容", class: "alert-heading", style: "font-size: 1.3em;"
+    ul#error_explanation
+      - user.errors.full_messages.each do |message|
+        li = message
+
+= form_with model: user, local: true, class: "my-3", html: { autocomplete: "off" } do |f|
+  .form-group
+    = f.label :name
+    = f.text_field :name, class: "form-control", id: "user_name"
+  .form-group
+    = f.label :email
+    = f.text_field :email, class: "form-control", id: "user_email"
+  .form-group
+    = f.label :password
+    = f.password_field :password, class: "form-control", id: "user_password"
+  .form-group
+    = f.label :password_confirmation
+    = f.password_field :password_confirmation, class: "form-control", id: "user_password_confirmation"
+  = f.submit nil, class: "btn btn-success", id: "user_form_button"

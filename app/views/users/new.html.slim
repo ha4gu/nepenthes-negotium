@@ -1,0 +1,8 @@
+- page_title = "ユーザー作成"
+- provide :page_title, page_title
+
+h1 = page_title
+
+= render partial: "form", locals: {user: @user}
+
+= link_to "ユーザー一覧に戻る", users_path
