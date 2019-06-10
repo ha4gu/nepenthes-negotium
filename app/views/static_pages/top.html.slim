@@ -14,3 +14,14 @@ ul
     ul
       li = link_to "ユーザー一覧", users_path
       li = link_to "ユーザー作成", new_user_path
+  li
+    | セッション
+    ul
+      - if session[:user_id]
+        - user = User.find_by_id(session[:user_id])
+        li = "現在 #{user.name} でログイン中"
+        li = link_to "ログアウト", session_path(user), method: :delete,
+                data: {confirm: "ログアウトしますか？"}
+      - else
+        li = link_to "ログイン", login_path
+        li 現在未ログイン
