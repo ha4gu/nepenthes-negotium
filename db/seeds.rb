@@ -6,6 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+ha4gu = User.create(name: "ha4gu", email: "ha4gu@example.com", password: "P@ssw0rd")
+
 COUNT = 50000 # should be less than or equal 99999
 1.step(COUNT) do |i|
   current_subject = "Task#{sprintf "%05d", i}"
@@ -14,6 +16,8 @@ COUNT = 50000 # should be less than or equal 99999
     t.detail  = "This is Task #{sprintf "%05d", i}"
     t.deadline_date = Date.today.since(i.days).to_date if i % 3 == 0
     t.deadline_time = Time.zone.now.since(i.minutes)   if i % 5 == 0
+
+    # status
     if i % 100 == 0
       t.status = 2
     elsif i % 10 == 0
@@ -21,6 +25,18 @@ COUNT = 50000 # should be less than or equal 99999
     else
       t.status = 0
     end
+
+    # priority
+    t.priority = \
+      case i % 3
+      when 0 then 2
+      when 1 then 3
+      else        4
+      end
+
+    # user
+    t.user_id = ha4gu.id
+
     t.created_at = t.updated_at =  Time.zone.now.ago((10000-i).minutes)
   end
 end
