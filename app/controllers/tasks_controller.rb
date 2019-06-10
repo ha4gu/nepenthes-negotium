@@ -1,11 +1,12 @@
 class TasksController < ApplicationController
+  before_action :must_be_logged_in
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :set_options_for_select, only: [:new, :edit]
 
   include Pagy::Backend
 
   def index
-    @q = Task.ransack(params[:q])
+    @q = @current_user.tasks.ransack(params[:q])
     @q.sorts = "created_at desc" if @q.sorts.empty?
     @pagy, @tasks = pagy(@q.result(distinct: false))
   end
@@ -22,7 +23,7 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
-    @task.user_id ||= User.first.id # 暫定対応
+    @task.user_id = @current_user.id
     if @task && @task.save
       redirect_to tasks_url, notice: "タスクを作成しました。"
     else
@@ -82,7 +83,7 @@ class TasksController < ApplicationController
   end
 
   def set_task
-    @task = Task.find_by_id(params[:id])
+    @task = @current_user.tasks.find_by_id(params[:id])
   end
 
   def set_options_for_select
