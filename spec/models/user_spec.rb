@@ -28,6 +28,12 @@ RSpec.describe User, type: :model do
     expect(user.errors[:password]).to include("を入力してください")
   end
 
+  it "is invalid with empty password" do
+    user = User.new(password: "")
+    user.valid?
+    expect(user.errors[:password]).to include("を入力してください")
+  end
+
   it "is invalid if password_confirmation doesn't match password" do
     user = User.new(
         name: "TestUser",
@@ -63,9 +69,21 @@ RSpec.describe User, type: :model do
     expect(user.errors[:name]).to include("を入力してください")
   end
 
+  it "is invalid with empty name" do
+    user = User.new(name: "")
+    user.valid?
+    expect(user.errors[:name]).to include("を入力してください")
+  end
+
   # email
   it "is invalid without email" do
     user = User.new(email: nil)
+    user.valid?
+    expect(user.errors[:email]).to include("を入力してください")
+  end
+
+  it "is invalid with empty email" do
+    user = User.new(email: "")
     user.valid?
     expect(user.errors[:email]).to include("を入力してください")
   end
