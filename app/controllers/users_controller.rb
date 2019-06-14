@@ -3,6 +3,8 @@ class UsersController < ApplicationController
   before_action :must_be_logged_in, only: [:index, :show, :edit, :update, :destroy]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  include Pagy::Backend
+
   def index
     @users = User.all.includes(:tasks)
   end
@@ -10,6 +12,8 @@ class UsersController < ApplicationController
   def show
     if @user.nil?
       redirect_to users_url, alert: "指定されたユーザーは見つかりません。"
+    else
+      @pagy, @user_tasks = pagy(@user.tasks)
     end
   end
 
