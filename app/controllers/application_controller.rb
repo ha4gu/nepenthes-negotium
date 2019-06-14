@@ -23,4 +23,12 @@ class ApplicationController < ActionController::Base
       redirect_to root_url
     end
   end
+
+  # 管理者でない場合にはトップ画面にリダイレクトさせるメソッド
+  def must_be_admin
+    unless @current_user.admin?
+      flash.notice = "アクセスできません。"
+      redirect_to root_url
+    end
+  end
 end
