@@ -3,7 +3,7 @@ class User < ApplicationRecord
   has_secure_password
 
   # Association
-  has_many :tasks
+  has_many :tasks, dependent: :delete_all
 
   # Validation
   validates :name,  presence: true
