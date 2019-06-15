@@ -1,0 +1,7 @@
+- page_title = "非管理者エラー"
+- provide :page_title, page_title
+
+.text-center.my-3.text-danger
+  h1 = page_title
+  p あなたはこのページを表示できません。
+  = link_to "トップページに戻る", root_path
