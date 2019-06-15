@@ -8,10 +8,12 @@ table.table.table-hover.my-3
     tr
       th = User.human_attribute_name(:name)
       th = User.human_attribute_name(:email)
+      th = User.human_attribute_name(:admin)
       th タスク数
   tbody
     - @users.each do |user|
       tr
         td = link_to user.name, user_path(user)
         td.nowrap = user.email
+        td = user.admin? ? "✔️" : ""
         td = user.tasks.size

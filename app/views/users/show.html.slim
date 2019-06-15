@@ -21,6 +21,9 @@ table.table.table-hover.my-3
       th = User.human_attribute_name(:updated_at)
       td = @user.updated_at.strftime("%Y/%m/%d %H:%M")
     tr
+      th = User.human_attribute_name(:admin)
+      td = @user.admin? ? "あり️" : "なし"
+    tr
       th タスク総数
       td = @user.tasks.size
 
