@@ -1,6 +1,11 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user
 
+  class NotAdminError < StandardError
+  end
+
+  rescue_from NotAdminError, with: :show_not_admin_error_page
+
   private
 
   # ログイン済みかどうかを確認するためのメソッド
@@ -22,5 +27,18 @@ class ApplicationController < ActionController::Base
       flash.notice = "既にログインしています。"
       redirect_to root_url
     end
+  end
+
+  # 管理者でない場合には例外を発生させるメソッド
+  def must_be_admin
+    unless @current_user.admin?
+      raise NotAdminError
+    end
+  end
+
+  # 管理者でない場合の例外用エラーページ表示
+  def show_not_admin_error_page(error)
+    @error = error
+    render "layouts/not_admin_error"
   end
 end

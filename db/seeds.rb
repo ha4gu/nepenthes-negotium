@@ -6,9 +6,13 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-ha4gu = User.create(name: "ha4gu", email: "ha4gu@example.com", password: "P@ssw0rd")
+admin = User.create(name: "Admin", email: "admin@example.com", password: "asdf", admin: true)
+ha4gu = User.create(name: "ha4gu", email: "ha4gu@example.com", password: "asdf", admin: false)
+test1 = User.create(name: "test1", email: "test1@example.com", password: "asdf", admin: false)
+test2 = User.create(name: "test2", email: "test2@example.com", password: "asdf", admin: false)
+test3 = User.create(name: "test3", email: "test3@example.com", password: "asdf", admin: false)
 
-COUNT = 50000 # should be less than or equal 99999
+COUNT = 5000 # should be less than or equal 99999
 1.step(COUNT) do |i|
   current_subject = "Task#{sprintf "%05d", i}"
   Task.find_or_create_by!(subject: current_subject) do |t|
@@ -35,7 +39,13 @@ COUNT = 50000 # should be less than or equal 99999
       end
 
     # user
-    t.user_id = ha4gu.id
+    t.user = case i % 9
+             when 1 then test1
+             when 2 then test2
+             when 3 then test3
+             when 4 || 5 then ha4gu
+             else        admin
+             end
 
     t.created_at = t.updated_at =  Time.zone.now.ago((10000-i).minutes)
   end
