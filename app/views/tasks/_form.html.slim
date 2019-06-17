@@ -30,4 +30,8 @@
     = f.label :priority
     = f.select :priority, class: "form-control", id: "task_priority" do
       - options_for_select(@priority_options, task.priority)
+  .form-group
+    = f.label :label_list
+    = f.text_field :label_list, class: "form-control", id: "task_label_list",
+            value: task.label_list.join(", ")
   = f.submit nil, class: "btn btn-success", id: "task_form_button"

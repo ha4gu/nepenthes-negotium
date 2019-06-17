@@ -53,6 +53,9 @@ class Task < ApplicationRecord
     end
   end
 
+  # labels, handled by ActsAsTaggableOn
+  acts_as_ordered_taggable_on :labels
+
   private
 
   # 終了期限日が空だが終了期限時刻は定まっている場合に、終了期限日を今日の日付にする処理

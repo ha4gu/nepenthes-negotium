@@ -69,16 +69,16 @@ class TasksController < ApplicationController
 
     if date_year.present? && date_month.present? && date_day.present? && time_hour.present? && time_minute.present?
       # すべての項目が入力済みの場合: _dateも_timeも有効
-      params.require(:task).permit(:subject, :detail, :status, :priority, :deadline_date, :deadline_time)
+      params.require(:task).permit(:subject, :detail, :status, :priority, :label_list, :deadline_date, :deadline_time)
     elsif date_year.present? && date_month.present? && date_day.present?
       # 日付部分は入力済みだが時刻部分は不十分: _dateのみ有効
-      params.require(:task).permit(:subject, :detail, :status, :priority, :deadline_date)
+      params.require(:task).permit(:subject, :detail, :status, :priority, :label_list, :deadline_date)
     elsif time_hour.present? && time_minute.present?
       # 時刻部分は入力済みだが日付部分は不十分: _timeのみ有効
-      params.require(:task).permit(:subject, :detail, :status, :priority, :deadline_time)
+      params.require(:task).permit(:subject, :detail, :status, :priority, :label_list, :deadline_time)
     else
       # 日付部分も時刻部分も不十分: _dateも_timeも無効にしておく
-      params.require(:task).permit(:subject, :detail, :status, :priority)
+      params.require(:task).permit(:subject, :detail, :status, :priority, :label_list)
     end
   end
 
