@@ -1,0 +1,17 @@
+- page_title = "ラベル一覧"
+- provide :page_title, page_title
+
+h1 = page_title
+
+table.table.table-hover.my-3
+  thead.thead-default
+    tr
+      th ID
+      th ラベル名
+      th タスク数
+  tbody
+    - @labels.each do |label|
+      tr
+        td = label.id
+        td = label.name
+        td = label.taggings_count
