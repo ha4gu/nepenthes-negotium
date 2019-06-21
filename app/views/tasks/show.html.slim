@@ -28,7 +28,10 @@ table.table.table-hover.my-3
       td = Task.human_attribute_name("priority.#{@task.priority}")
     tr
       th = Task.human_attribute_name(:label_list)
-      td = @task.labels_from(@current_user)
+      td
+        - @task.taggings.where(tagger: @current_user).includes(:tag).each_with_index do |tagging, index|
+          = ", " unless index == 0
+          = link_to tagging.tag.name, label_path(tagging.tag.id)
     tr
       th = Task.human_attribute_name(:created_at)
       td = @task.created_at.strftime("%Y/%m/%d %H:%M")
