@@ -20,6 +20,9 @@ class User < ApplicationRecord
   class LastAdminError < StandardError
   end
 
+  # ActsAsTaggableOn
+  acts_as_tagger
+
   private
 
   # prevent to update the last admin to normal user

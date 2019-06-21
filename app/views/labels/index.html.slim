@@ -1,0 +1,19 @@
+- page_title = "ラベル一覧"
+- provide :page_title, page_title
+
+h1 = page_title
+
+table.table.table-hover.my-3
+  thead.thead-default
+    tr
+      th ID
+      th ラベル名
+      th タスク数
+  tbody
+    - @labels&.each do |label|
+      tr
+        td = link_to label.id, label_path(label)
+        td = link_to label.name, label_path(label)
+        td = label.taggings_count
+
+== pagy_bootstrap_combo_nav_js(@pagy)

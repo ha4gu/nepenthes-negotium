@@ -20,6 +20,7 @@ ja:
         deadline_for_show: 終了期限
         status: 状態
         priority: 優先度
+        label_list: ラベル
         created_at: 作成日時
         updated_at: 更新日時
       task/status:
