@@ -3,7 +3,7 @@ class Task < ApplicationRecord
   belongs_to :user
 
   # Callback
-  before_validation :set_deadline_date
+  before_validation :set_deadline_date, :switch_labels
 
   # Validation
   validates :subject,  presence: true
@@ -63,5 +63,15 @@ class Task < ApplicationRecord
     if self.deadline_time.present? && !self.deadline_date.present?
       self.deadline_date = Date.today
     end
+  end
+
+  # オーナーなしラベルをオーナーありラベルに貼り直す処理
+  def switch_labels
+    # self.label_listにはユーザが入力したラベルの一覧が格納されている。
+    # これを現在のログインユーザーをオーナーとしたラベルとして貼り直す。
+    # ただしこの段階ではまだ保存・更新はさせない。
+    self.user.tag(self, with: self.label_list, on: :labels, skip_save: true)
+    # オーナーなしのラベルはクリアする
+    self.label_list = nil
   end
 end

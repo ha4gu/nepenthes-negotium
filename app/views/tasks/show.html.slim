@@ -28,7 +28,7 @@ table.table.table-hover.my-3
       td = Task.human_attribute_name("priority.#{@task.priority}")
     tr
       th = Task.human_attribute_name(:label_list)
-      td = @task.label_list
+      td = @task.labels_from(@current_user)
     tr
       th = Task.human_attribute_name(:created_at)
       td = @task.created_at.strftime("%Y/%m/%d %H:%M")

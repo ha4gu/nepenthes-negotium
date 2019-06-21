@@ -10,7 +10,7 @@ table.table.table-hover.my-3
       th ラベル名
       th タスク数
   tbody
-    - @labels.each do |label|
+    - @labels&.each do |label|
       tr
         td = label.id
         td = label.name

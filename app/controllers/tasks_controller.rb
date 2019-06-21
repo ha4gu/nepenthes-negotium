@@ -37,6 +37,8 @@ class TasksController < ApplicationController
     if @task.nil?
       redirect_to tasks_url, alert: "指定されたタスクは見つかりません。"
     end
+    # オーナーありのラベルを編集のためにオーナーなしラベルとしてコピーしておく
+    @task.label_list = @task.owner_tags_on(@current_user, :labels)
   end
 
   def update
