@@ -1,3 +1,3 @@
-module TasksHelper
+module LabelsHelper
   include Pagy::Frontend
 end

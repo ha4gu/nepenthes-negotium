@@ -54,7 +54,8 @@ gem "stateful_enum", "~> 0.6.0"
 # gem "omniauth-instagram", "~> 1.3"
 
 # Use pagy for pagination
-# gem "pagy", "~> 2.1", ">= 2.1.4"
+gem "oj", "~> 3.7", ">= 3.7.12"
+gem "pagy", "~> 3.2", ">= 3.2.1"
 
 # Use FriendlyId to create pretty URLs
 # gem "friendly_id", "~> 5.2", ">= 5.2.5"
@@ -67,6 +68,9 @@ gem "stateful_enum", "~> 0.6.0"
 
 # Use ransack for use of search function
 gem "ransack", "~> 2.1", ">= 2.1.1"
+
+# Use ActsAsTaggableOn for use of custom tagging function
+gem "acts-as-taggable-on", "~> 6.0"
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console

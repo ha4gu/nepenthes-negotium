@@ -1,0 +1,15 @@
+- page_title = "ログイン"
+- provide :page_title, page_title
+
+h1 = page_title
+
+= form_with scope: :session, local: true, url: sessions_path, class: "my-3", html: {autocomplete: "on"} do |f|
+  .form-group
+    = f.label :email, "メールアドレス"
+    = f.text_field :email, class: "form-control", id: "session_email", value: @input_email_address
+  .form-group
+    = f.label :password, "パスワード"
+    = f.password_field :password, class: "form-control", id: "session_password"
+  = f.submit "ログイン", class: "btn btn-success", id: "session_form_button"
+
+= link_to "トップ画面に戻る", root_path

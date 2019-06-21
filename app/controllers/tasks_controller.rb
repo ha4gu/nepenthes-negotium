@@ -1,11 +1,14 @@
 class TasksController < ApplicationController
+  before_action :must_be_logged_in
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :set_options_for_select, only: [:new, :edit]
 
+  include Pagy::Backend
+
   def index
-    @q = Task.ransack(params[:q])
+    @q = @current_user.tasks.ransack(params[:q])
     @q.sorts = "created_at desc" if @q.sorts.empty?
-    @tasks = @q.result(distinct: false)
+    @pagy, @tasks = pagy(@q.result(distinct: false))
   end
 
   def show
@@ -20,6 +23,7 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
+    @task.user_id = @current_user.id
     if @task && @task.save
       redirect_to tasks_url, notice: "タスクを作成しました。"
     else
@@ -33,6 +37,8 @@ class TasksController < ApplicationController
     if @task.nil?
       redirect_to tasks_url, alert: "指定されたタスクは見つかりません。"
     end
+    # オーナーありのラベルを編集のためにオーナーなしラベルとしてコピーしておく
+    @task.label_list = @task.owner_tags_on(@current_user, :labels)
   end
 
   def update
@@ -65,21 +71,21 @@ class TasksController < ApplicationController
 
     if date_year.present? && date_month.present? && date_day.present? && time_hour.present? && time_minute.present?
       # すべての項目が入力済みの場合: _dateも_timeも有効
-      params.require(:task).permit(:subject, :detail, :status, :priority, :deadline_date, :deadline_time)
+      params.require(:task).permit(:subject, :detail, :status, :priority, :label_list, :deadline_date, :deadline_time)
     elsif date_year.present? && date_month.present? && date_day.present?
       # 日付部分は入力済みだが時刻部分は不十分: _dateのみ有効
-      params.require(:task).permit(:subject, :detail, :status, :priority, :deadline_date)
+      params.require(:task).permit(:subject, :detail, :status, :priority, :label_list, :deadline_date)
     elsif time_hour.present? && time_minute.present?
       # 時刻部分は入力済みだが日付部分は不十分: _timeのみ有効
-      params.require(:task).permit(:subject, :detail, :status, :priority, :deadline_time)
+      params.require(:task).permit(:subject, :detail, :status, :priority, :label_list, :deadline_time)
     else
       # 日付部分も時刻部分も不十分: _dateも_timeも無効にしておく
-      params.require(:task).permit(:subject, :detail, :status, :priority)
+      params.require(:task).permit(:subject, :detail, :status, :priority, :label_list)
     end
   end
 
   def set_task
-    @task = Task.find_by_id(params[:id])
+    @task = @current_user.tasks.find_by_id(params[:id])
   end
 
   def set_options_for_select

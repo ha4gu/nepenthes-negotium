@@ -1,0 +1,52 @@
+- page_title = "ユーザー詳細"
+- provide :page_title, page_title
+
+h1 = page_title
+
+table.table.table-hover.my-3
+  tbody
+    tr
+      th = User.human_attribute_name(:id)
+      td = @user.id
+    tr
+      th = User.human_attribute_name(:name)
+      td = @user.name
+    tr
+      th = User.human_attribute_name(:email)
+      td = @user.email
+    tr
+      th = User.human_attribute_name(:created_at)
+      td = @user.created_at.strftime("%Y/%m/%d %H:%M")
+    tr
+      th = User.human_attribute_name(:updated_at)
+      td = @user.updated_at.strftime("%Y/%m/%d %H:%M")
+    tr
+      th = User.human_attribute_name(:admin)
+      td = @user.admin? ? "あり️" : "なし"
+    tr
+      th タスク総数
+      td = @user.tasks.size
+
+p.text-center
+  = link_to "編集", edit_user_path(@user), class: "btn btn-outline-success mx-2"
+  = link_to "削除", user_path(@user), method: :delete, class: "btn btn-danger mx-2",
+          data: {confirm: "このユーザーを削除しますか？"}
+
+= link_to "ユーザー一覧に戻る", users_path
+
+h2.my-4 タスク一覧
+
+table.table.table-hover.my-3
+  thead.thead-default
+    tr
+      th = Task.human_attribute_name(:subject)
+      th = Task.human_attribute_name(:priority)
+      th = Task.human_attribute_name(:created_at)
+  tbody
+    - @user_tasks.each do |task|
+      tr
+        td = link_to task.subject, task_path(task)
+        td = Task.human_attribute_name("priority.#{task.priority}")
+        td.nowrap = task.created_at.strftime("%Y/%m/%d %H:%M")
+
+== pagy_bootstrap_combo_nav_js(@pagy)

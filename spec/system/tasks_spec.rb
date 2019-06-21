@@ -1,6 +1,14 @@
 require "rails_helper"
 
 describe "タスク", type: :system do
+  before do
+    @test_user = FactoryBot.create(:user)
+    visit login_path
+    fill_in "メールアドレス", with: "test@example.com"
+    fill_in "パスワード", with: "P@ssw0rd"
+    click_button "ログイン"
+  end
+
   test_task_subject = "テスト用タスク"
   test_task_detail  = "このタスクはテスト用です。"
   test_task_deadline_date = Date.tomorrow
@@ -19,7 +27,7 @@ describe "タスク", type: :system do
 
     context "タスク作成後 /tasks にアクセス" do
       before do
-        FactoryBot.create(:task, subject: test_task_subject, detail: test_task_detail)
+        FactoryBot.create(:task, subject: test_task_subject, detail: test_task_detail, user: @test_user)
         visit tasks_path
       end
 
@@ -31,8 +39,8 @@ describe "タスク", type: :system do
 
     context "タスクを2つ作成後 /tasks にアクセス" do
       before do
-        FactoryBot.create(:task, subject: "Former task", detail: "")
-        FactoryBot.create(:task, subject: "Latter task", detail: "")
+        FactoryBot.create(:task, subject: "Former task", detail: "", user: @test_user)
+        FactoryBot.create(:task, subject: "Latter task", detail: "", user: @test_user)
         visit tasks_path
       end
 
@@ -47,7 +55,7 @@ describe "タスク", type: :system do
 
   describe "詳細表示" do
     before do
-      FactoryBot.create(:task, subject: test_task_subject, detail: test_task_detail,
+      FactoryBot.create(:task, subject: test_task_subject, detail: test_task_detail, user: @test_user,
                         deadline_date: test_task_deadline_date, deadline_time: test_task_deadline_time)
     end
 
@@ -123,7 +131,7 @@ describe "タスク", type: :system do
 
   describe "タスク編集" do
     before do
-      FactoryBot.create(:task, subject: test_task_subject, detail: test_task_detail)
+      FactoryBot.create(:task, subject: test_task_subject, detail: test_task_detail, user: @test_user)
       visit task_path(Task.last)
       click_link "編集"
     end
@@ -211,7 +219,7 @@ describe "タスク", type: :system do
 
   describe "タスク削除" do
     before do
-      FactoryBot.create(:task, subject: test_task_subject, detail: test_task_detail)
+      FactoryBot.create(:task, subject: test_task_subject, detail: test_task_detail, user: @test_user)
       visit task_path(Task.last)
     end
 

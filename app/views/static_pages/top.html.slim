@@ -7,5 +7,21 @@ ul
   li
     | タスク
     ul
-      li = link_to "タスク一覧", tasks_path
       li = link_to "タスク作成", new_task_path
+      li = link_to "タスク一覧", tasks_path
+      li = link_to "ラベル一覧", labels_path
+  li
+    | ユーザー
+    ul
+      li = link_to "ユーザー作成", new_user_path
+      li = link_to "ユーザー一覧", users_path
+  li
+    | セッション
+    ul
+      - if @current_user # 既にログイン済みの場合
+        li = "現在 #{@current_user.name} でログイン中"
+        li = link_to "ログアウト", session_path(@current_user), method: :delete,
+                data: {confirm: "ログアウトしますか？"}
+      - else
+        li = link_to "ログイン", login_path
+        li 現在未ログイン

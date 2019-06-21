@@ -1,3 +1,3 @@
-module TasksHelper
+module UsersHelper
   include Pagy::Frontend
 end
