@@ -8,17 +8,11 @@ class LabelsController < ApplicationController
   end
 
   def show
-    @tag = @current_user.owned_tags.find_by_id(params[:id])
-    if @tag.nil?
+    @label = @current_user.owned_tags.find_by_id(params[:id])
+    if @label.nil?
       redirect_to labels_url, alert: "指定されたラベルは見つかりません。"
     else
-      @pagy, @taggings = pagy(@tag.taggings.includes(:taggable))
+      @pagy, @tasks = pagy(@label.taggings.includes(:taggable))
     end
-  end
-
-  private
-
-  def set_label
-    @label = "hoge"
   end
 end

@@ -7,15 +7,15 @@ table.table.table-hover.my-3
   tbody
     tr
       th ID
-      td = @tag.id
+      td = @label.id
     tr
       th ラベル名
-      td = @tag.name
+      td = @label.name
     tr
       th タスク数
-      td = @taggings.size
+      td = @label.taggings.size
 
-h2.my-4 = "ラベル「#{@tag.name}」が付いたタスク一覧"
+h2.my-4 = "ラベル「#{@label.name}」が付いたタスク一覧"
 
 table.table.table-hover.my-3
   thead.thead-default
@@ -24,7 +24,7 @@ table.table.table-hover.my-3
       th = Task.human_attribute_name(:priority)
       th = Task.human_attribute_name(:created_at)
   tbody
-    - @taggings&.each do |task|
+    - @tasks&.each do |task|
       tr
         td = link_to task.taggable.subject, task_path(task.taggable)
         td = Task.human_attribute_name("priority.#{task.taggable.priority}")
