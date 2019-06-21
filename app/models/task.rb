@@ -70,7 +70,7 @@ class Task < ApplicationRecord
     # self.label_listにはユーザが入力したラベルの一覧が格納されている。
     # これを現在のログインユーザーをオーナーとしたラベルとして貼り直す。
     # ただしこの段階ではまだ保存・更新はさせない。
-    self.user.tag(self, with: self.label_list, on: :labels, skip_save: true)
+    self.user&.tag(self, with: self.label_list, on: :labels, skip_save: true)
     # オーナーなしのラベルはクリアする
     self.label_list = nil
   end
