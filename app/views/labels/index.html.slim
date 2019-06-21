@@ -12,6 +12,8 @@ table.table.table-hover.my-3
   tbody
     - @labels&.each do |label|
       tr
-        td = label.id
-        td = label.name
+        td = link_to label.id, label_path(label)
+        td = link_to label.name, label_path(label)
         td = label.taggings_count
+
+== pagy_bootstrap_combo_nav_js(@pagy)
