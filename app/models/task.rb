@@ -4,6 +4,7 @@ class Task < ApplicationRecord
 
   # Callback
   before_validation :set_deadline_date, :switch_labels
+  after_commit :update_expire_counts
 
   # Validation
   validates :subject,  presence: true
@@ -53,6 +54,19 @@ class Task < ApplicationRecord
     end
   end
 
+  # 終了期限（期限切れチェック用）
+  def deadline_for_expire_check
+    if @deadline_for_expire_check
+      @deadline_for_expire_check
+    elsif self.deadline_date.present? && self.deadline_time.present?
+      Time.zone.parse("#{self.deadline_date.to_s} #{self.deadline_time.to_s(:time)}")
+    elsif self.deadline_date.present?
+      Time.zone.parse("#{self.deadline_date.tomorrow}")
+    else
+      nil
+    end
+  end
+
   # labels, handled by ActsAsTaggableOn
   acts_as_ordered_taggable_on :labels
 
@@ -73,5 +87,10 @@ class Task < ApplicationRecord
     self.user&.tag(self, with: self.label_list, on: :labels, skip_save: true)
     # オーナーなしのラベルはクリアする
     self.label_list = nil
+  end
+
+  # 終了期限切れタスク数の更新処理
+  def update_expire_counts
+    CountExpiringTasksJob.perform_later(self.user.id)
   end
 end
