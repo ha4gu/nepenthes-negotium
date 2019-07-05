@@ -3,6 +3,16 @@
 
 h1 = page_title
 
+- if @expire_tasks && (@expire_tasks.expired_count > 0 || @expire_tasks.expiring_count > 0)
+  #deadline-count.my-2.py-1.px-2.text-danger.border.border-danger.rounded
+    p.mb-0
+      | すでに期限が切れているタスク数:&nbsp;
+      = @expire_tasks.expired_count
+    p.mb-0
+      = @expire_tasks.expiring_hours
+      | 時間以内に期限が切れるタスク数:&nbsp;
+      = @expire_tasks.expiring_count
+
 #index-search.my-2
   = search_form_for @q, class: "" do |f|
     p 検索

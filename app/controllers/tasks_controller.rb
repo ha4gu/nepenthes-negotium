@@ -9,6 +9,8 @@ class TasksController < ApplicationController
     @q = @current_user.tasks.ransack(params[:q])
     @q.sorts = "created_at desc" if @q.sorts.empty?
     @pagy, @tasks = pagy(@q.result(distinct: false))
+
+    @expire_tasks = ExpireCount.find_by_user_id(@current_user)
   end
 
   def show
