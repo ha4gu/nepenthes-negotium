@@ -1,0 +1,5 @@
+- if @current_user && session[:show_deadline]
+  = tag.div class: "alert alert-danger alert-dismissible fade show my-2", role: "alert"
+    span 期限切れのタスクがあります。
+    = tag.button type: "button", class: "close", data: { dismiss: "alert" }, aria: { label: "Close" }
+      = tag.span "×", aria: { hidden: "true" }

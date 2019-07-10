@@ -13,6 +13,12 @@ class SessionsController < ApplicationController
       # 認証成功したケース
       session[:user_id] = user.id
       flash.notice = "ログインしました。"
+
+      expire_tasks = ExpireCount.find_by_user_id(user)
+      if expire_tasks&.expired_count > 0
+        session[:show_deadline] = true
+      end
+
       redirect_to root_path # temp
     else
       # 認証失敗したケース
