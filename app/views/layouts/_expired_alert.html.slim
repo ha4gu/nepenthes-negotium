@@ -1,5 +1,5 @@
 - if @current_user && session[:show_deadline]
-  = tag.div class: "alert alert-danger alert-dismissible fade show my-2", role: "alert"
+  = tag.div class: "alert alert-danger alert-dismissible my-2"
     span 期限切れのタスクがあります。
-    = tag.button type: "button", class: "close", data: { dismiss: "alert" }, aria: { label: "Close" }
-      = tag.span "×", aria: { hidden: "true" }
+    = form_with url: expired_alert_path, method: :delete do |f|
+      = f.submit "×", class: "btn close"

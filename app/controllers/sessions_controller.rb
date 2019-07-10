@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   before_action :must_not_be_logged_in, only: [:new, :create]
-  before_action :must_be_logged_in, only: [:destroy]
+  before_action :must_be_logged_in, only: [:destroy, :hide_alert]
 
   def new
     # 入力済みメールアドレスを引き継ぐ処理
@@ -34,6 +34,11 @@ class SessionsController < ApplicationController
     reset_session
     flash.notice = "ログアウトしました。"
     redirect_to root_path # temp
+  end
+
+  def hide_alert
+    session[:show_deadline] = false
+    head :no_content
   end
 
   private

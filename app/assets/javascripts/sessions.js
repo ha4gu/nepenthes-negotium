@@ -1,2 +1,10 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+window.addEventListener("load", function(){
+    document.querySelectorAll('.alert-dismissible').forEach(function(alert) {
+        alert.addEventListener('ajax:success', function(event) {
+            alert.classList.add('fadeout');
+            setTimeout(function(){
+                alert.parentNode.removeChild(alert);
+            }, 500);
+        }, false);
+    });
+}, false);
