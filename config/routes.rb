@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :labels, path: "tasks/labels", only: [:index, :show]
   resources :tasks
   resources :users, path: "admin/users"
-  get "/login", to: "sessions#new"
+  get    "/login",         to: "sessions#new"
+  delete "/expired-alert", to: "sessions#hide_alert"
   resources :sessions, only: [:create, :destroy]
 end

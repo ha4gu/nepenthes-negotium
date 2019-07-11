@@ -36,4 +36,4 @@ plugin :tmp_restart
 # Listen on 3000/tcp allowing access from any IP address
 bind "tcp://0.0.0.0:3000"
 # And also enable unix domain socket for nginx
-bind "unix://#{Rails.root}/tmp/sockets/puma.sock"
+bind "unix://#{Rails.root.join("tmp", "sockets", "puma.sock")}"

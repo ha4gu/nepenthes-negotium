@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_17_041538) do
+ActiveRecord::Schema.define(version: 2019_06_24_002611) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "expire_counts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "expired_count", default: 0, null: false
+    t.integer "expiring_count", default: 0, null: false
+    t.integer "expiring_hours", default: 24, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_expire_counts_on_user_id"
+  end
 
   create_table "taggings", id: :serial, force: :cascade do |t|
     t.integer "tag_id"
@@ -65,5 +75,6 @@ ActiveRecord::Schema.define(version: 2019_06_17_041538) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "expire_counts", "users"
   add_foreign_key "tasks", "users"
 end
