@@ -9,13 +9,13 @@ class SessionsController < ApplicationController
 
   def create
     user = User.find_by(email: session_params[:email])
-    if user && user.authenticate(session_params[:password])
+    if user&.authenticate(session_params[:password])
       # 認証成功したケース
       session[:user_id] = user.id
       flash.notice = "ログインしました。"
 
-      expire_tasks = ExpireCount.find_by_user_id(user)
-      if expire_tasks&.expired_count > 0
+      expire_tasks = ExpireCount.find_by(user_id: user.id)
+      if expire_tasks && expire_tasks.expired_count > 0
         session[:show_deadline] = true
       end
 

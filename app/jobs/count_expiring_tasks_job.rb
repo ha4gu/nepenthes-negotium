@@ -4,13 +4,13 @@ class CountExpiringTasksJob < ApplicationJob
 
   def perform(user_id)
     # エントリの読み込みまたは新規作成
-    count_entry = ExpireCount.find_by_user_id(user_id) || ExpireCount.new(user_id: user_id)
+    count_entry = ExpireCount.find_by(user_id: user_id) || ExpireCount.new(user_id: user_id)
     count_entry.expired_count = 0
     count_entry.expiring_count = 0
     count_entry.expiring_hours ||= DEFAULT_HOURS
 
     # カウント処理
-    User.find_by_id!(user_id).tasks.where.not(status: "finished").each do |task|
+    User.find(user_id).tasks.where.not(status: "finished").each do |task|
       deadline = task.deadline_for_expire_check
       if deadline.nil?
         next

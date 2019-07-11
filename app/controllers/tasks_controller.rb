@@ -10,7 +10,7 @@ class TasksController < ApplicationController
     @q.sorts = "created_at desc" if @q.sorts.empty?
     @pagy, @tasks = pagy(@q.result(distinct: false))
 
-    @expire_tasks = ExpireCount.find_by_user_id(@current_user)
+    @expire_tasks = ExpireCount.find_by(user_id: @current_user.id)
   end
 
   def show
@@ -38,9 +38,10 @@ class TasksController < ApplicationController
   def edit
     if @task.nil?
       redirect_to tasks_url, alert: "指定されたタスクは見つかりません。"
+    else
+      # オーナーありのラベルを編集のためにオーナーなしラベルとしてコピーしておく
+      @task.label_list = @task.owner_tags_on(@current_user, :labels)
     end
-    # オーナーありのラベルを編集のためにオーナーなしラベルとしてコピーしておく
-    @task.label_list = @task.owner_tags_on(@current_user, :labels)
   end
 
   def update
@@ -87,7 +88,7 @@ class TasksController < ApplicationController
   end
 
   def set_task
-    @task = @current_user.tasks.find_by_id(params[:id])
+    @task = @current_user.tasks.find_by(id: params[:id])
   end
 
   def set_options_for_select

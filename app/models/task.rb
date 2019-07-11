@@ -59,7 +59,7 @@ class Task < ApplicationRecord
     if @deadline_for_expire_check
       @deadline_for_expire_check
     elsif self.deadline_date.present? && self.deadline_time.present?
-      Time.zone.parse("#{self.deadline_date.to_s} #{self.deadline_time.to_s(:time)}")
+      Time.zone.parse("#{self.deadline_date} #{self.deadline_time.to_s(:time)}")
     elsif self.deadline_date.present?
       Time.zone.parse("#{self.deadline_date.tomorrow}")
     else
@@ -74,8 +74,8 @@ class Task < ApplicationRecord
 
   # 終了期限日が空だが終了期限時刻は定まっている場合に、終了期限日を今日の日付にする処理
   def set_deadline_date
-    if self.deadline_time.present? && !self.deadline_date.present?
-      self.deadline_date = Date.today
+    if self.deadline_time.present? && self.deadline_date.blank?
+      self.deadline_date = Time.zone.today
     end
   end
 
