@@ -8,7 +8,7 @@ class LabelsController < ApplicationController
   end
 
   def show
-    @label = @current_user.owned_tags.find_by_id(params[:id])
+    @label = @current_user.owned_tags.find_by(id: params[:id])
     if @label.nil?
       redirect_to labels_url, alert: "指定されたラベルは見つかりません。"
     else

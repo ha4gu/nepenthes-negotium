@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :must_be_logged_in
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:show, :edit, :update, :destroy, :toggle_status]
   before_action :set_options_for_select, only: [:new, :edit]
 
   include Pagy::Backend
@@ -9,6 +9,8 @@ class TasksController < ApplicationController
     @q = @current_user.tasks.ransack(params[:q])
     @q.sorts = "created_at desc" if @q.sorts.empty?
     @pagy, @tasks = pagy(@q.result(distinct: false))
+
+    @expire_tasks = ExpireCount.find_by(user_id: @current_user.id)
   end
 
   def show
@@ -36,9 +38,10 @@ class TasksController < ApplicationController
   def edit
     if @task.nil?
       redirect_to tasks_url, alert: "指定されたタスクは見つかりません。"
+    else
+      # オーナーありのラベルを編集のためにオーナーなしラベルとしてコピーしておく
+      @task.label_list = @task.owner_tags_on(@current_user, :labels)
     end
-    # オーナーありのラベルを編集のためにオーナーなしラベルとしてコピーしておく
-    @task.label_list = @task.owner_tags_on(@current_user, :labels)
   end
 
   def update
@@ -57,6 +60,22 @@ class TasksController < ApplicationController
     else
       flash.now.alert = "タスクを削除できませんでした。"
       render :show
+    end
+  end
+
+  def toggle_status
+    current_status = params[:status]
+    # 別のタブなどからタスクの状態が変更されている可能性があるため、
+    # タスクの状態がブラウザ表示上とDB上とで異なっている場合には更新させない
+    if @task && @task.status == current_status
+      if @task.status == "finished"
+        @task.update(status: "created")
+      else
+        @task.update(status: "finished")
+      end
+      head :no_content
+    else
+      head 422
     end
   end
 
@@ -85,7 +104,7 @@ class TasksController < ApplicationController
   end
 
   def set_task
-    @task = @current_user.tasks.find_by_id(params[:id])
+    @task = @current_user.tasks.find_by(id: params[:id])
   end
 
   def set_options_for_select

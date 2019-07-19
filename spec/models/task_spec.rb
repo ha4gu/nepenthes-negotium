@@ -116,6 +116,6 @@ RSpec.describe Task, type: :model do
         subject: "TestTask",
         user_id: @user.id
     )
-    expect(task.user).to eq User.find_by_email("test@example.com")
+    expect(task.user).to eq User.find_by(email: "test@example.com")
   end
 end

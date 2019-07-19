@@ -26,7 +26,16 @@ table.table.table-hover.my-3
   tbody
     - @tasks&.each do |task|
       tr
-        td = link_to task.taggable.subject, task_path(task.taggable)
+        td
+          / チェックボックス
+          - if task.taggable.status == "finished"
+            = tag.input type: "checkbox", checked: "checked",
+                    id: "task-checkbox-#{task.taggable.id}", class: "task-checkbox"
+          - else
+            = tag.input type: "checkbox",
+                    id: "task-checkbox-#{task.taggable.id}", class: "task-checkbox"
+          / タスク（タスク詳細へのリンク付き）
+          = link_to task.taggable.subject, task_path(task.taggable), class: "task-is-#{task.taggable.status}"
         td = Task.human_attribute_name("priority.#{task.taggable.priority}")
         td.nowrap = task.taggable.created_at.strftime("%Y/%m/%d %H:%M")
 

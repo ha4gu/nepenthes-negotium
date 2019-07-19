@@ -18,7 +18,7 @@ COUNT = 5000 # should be less than or equal 99999
   Task.find_or_create_by!(subject: current_subject) do |t|
     t.subject = current_subject
     t.detail  = "This is Task #{sprintf "%05d", i}"
-    t.deadline_date = Date.today.since(i.days).to_date if i % 3 == 0
+    t.deadline_date = Time.zone.today.since(i.days).to_date if i % 3 == 0
     t.deadline_time = Time.zone.now.since(i.minutes)   if i % 5 == 0
 
     # status
