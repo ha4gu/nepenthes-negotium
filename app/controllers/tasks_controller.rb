@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :must_be_logged_in
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:show, :edit, :update, :destroy, :toggle_status]
   before_action :set_options_for_select, only: [:new, :edit]
 
   include Pagy::Backend
@@ -60,6 +60,22 @@ class TasksController < ApplicationController
     else
       flash.now.alert = "タスクを削除できませんでした。"
       render :show
+    end
+  end
+
+  def toggle_status
+    current_status = params[:status]
+    # 別のタブなどからタスクの状態が変更されている可能性があるため、
+    # タスクの状態がブラウザ表示上とDB上とで異なっている場合には更新させない
+    if @task && @task.status == current_status
+      if @task.status == "finished"
+        @task.update(status: "created")
+      else
+        @task.update(status: "finished")
+      end
+      head :no_content
+    else
+      head 422
     end
   end
 

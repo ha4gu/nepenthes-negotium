@@ -81,12 +81,16 @@ class Task < ApplicationRecord
 
   # オーナーなしラベルをオーナーありラベルに貼り直す処理
   def switch_labels
-    # self.label_listにはユーザが入力したラベルの一覧が格納されている。
-    # これを現在のログインユーザーをオーナーとしたラベルとして貼り直す。
-    # ただしこの段階ではまだ保存・更新はさせない。
-    self.user&.tag(self, with: self.label_list, on: :labels, skip_save: true)
-    # オーナーなしのラベルはクリアする
-    self.label_list = nil
+    # チェックボックスによる状態変更の場合にこの処理が実行されるとラベルが消えてしまうため、
+    # タスク新規作成、あるいは更新の場合にのみこの処理が実行されるようにif文で制御している。
+    if self.label_list.present?
+      # self.label_listにはユーザが入力したラベルの一覧が格納されている。
+      # これを現在のログインユーザーをオーナーとしたラベルとして貼り直す。
+      # ただしこの段階ではまだ保存・更新はさせない。
+      self.user&.tag(self, with: self.label_list, on: :labels, skip_save: true)
+      # オーナーなしのラベルはクリアする
+      self.label_list = nil
+    end
   end
 
   # 終了期限切れタスク数の更新処理
