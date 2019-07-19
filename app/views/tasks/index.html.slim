@@ -72,6 +72,14 @@ table.table.table-hover.my-3
       tr
         / タスク
         td
+          / チェックボックス
+          - if task.status == "finished"
+            = tag.input type: "checkbox", checked: "checked",
+                    id: "task-checkbox-#{task.id}", class: "task-checkbox"
+          - else
+            = tag.input type: "checkbox",
+                    id: "task-checkbox-#{task.id}", class: "task-checkbox"
+          / タスク（タスク詳細へのリンク付き）
           = link_to task.subject, task_path(task), class: "task-is-#{task.status}"
         / 優先度
         td
