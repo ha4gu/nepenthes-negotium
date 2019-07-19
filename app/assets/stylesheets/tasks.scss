@@ -1,9 +1,15 @@
-// Place all the styles related to the tasks controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
-td.nowrap {
-  white-space: nowrap;
+td {
+  .nowrap {
+    white-space: nowrap;
+  }
+  a.task-is-started {
+    // 着手中のタスクは太字にする
+    font-weight: bold;
+  }
+  a.task-is-finished {
+    // 完了したタスクには二重取り消し線を引く
+    text-decoration: line-through double;
+  }
 }
 
 nav.pagy-bootstrap-combo-nav-js {

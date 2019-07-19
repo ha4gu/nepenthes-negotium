@@ -70,13 +70,19 @@ table.table.table-hover.my-3
   tbody
     - @tasks.each do |task|
       tr
-        td = link_to task.subject, task_path(task)
-        td = Task.human_attribute_name("priority.#{task.priority}")
-        - if params[:q] && params[:q][:s] =~ /^updated_at.+/
-          td.nowrap = task.updated_at.strftime("%Y/%m/%d %H:%M")
-        - elsif params[:q] && params[:q][:s] =~ /^deadline.+/
-          td.nowrap = task.deadline_for_show
-        - else
-          td.nowrap = task.created_at.strftime("%Y/%m/%d %H:%M")
+        / タスク
+        td
+          = link_to task.subject, task_path(task), class: "task-is-#{task.status}"
+        / 優先度
+        td
+          = Task.human_attribute_name("priority.#{task.priority}")
+        / 作成日時, 更新日時, 終了期限
+        td.nowrap
+          - if params[:q] && params[:q][:s] =~ /^updated_at.+/
+            = task.updated_at.strftime("%Y/%m/%d %H:%M")
+          - elsif params[:q] && params[:q][:s] =~ /^deadline.+/
+            = task.deadline_for_show
+          - else
+            = task.created_at.strftime("%Y/%m/%d %H:%M")
 
 == pagy_bootstrap_combo_nav_js(@pagy)
