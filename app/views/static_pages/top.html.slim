@@ -1,7 +1,42 @@
 - provide :page_title, ""
 
-h1 StaticPages#top
-p Find me in app/views/static_pages/top.html.slim
+h1 タスク管理ツール『タスクカズラ』
+p
+  | このツールは、
+  = link_to "株式会社万葉", "https://everyleaf.com/"
+  | さまが
+  = link_to "GitHubで公開されている新入社員教育用カリキュラム", "https://github.com/everyleaf/el-training/blob/master/docs/el-training.md"
+  | をベースとして作成したRuby on Railsアプリケーションです。
+
+p
+  | 詳細については
+  = link_to "GitHubレポジトリ", "https://github.com/ha4gu/nepenthes-negotium"
+  | をご覧ください。
+
+hr
+
+div
+  | ユーザーアカウントは、
+  ul
+    li
+      | 一般ユーザー
+      ul
+        li メールアドレス: user@example.com
+        li パスワード: P@ssw0rd
+    li
+      | 管理者権限
+      ul
+        li メールアドレス: admin@example.com
+        li パスワード: P@ssw0rd
+  | でそれぞれログインすることが（たぶん）できます。
+
+div
+  | なお、管理者権限でログインすると新たにユーザーアカウントを作成することができます。
+  br
+  | ご自由にアカウントを作成・変更・削除いただいても構いませんが、上記2アカウントについては
+  | メールアドレスなどのユーザー情報を変更したり、アカウントを削除しないようにしてください。
+
+hr
 
 ul
   li
